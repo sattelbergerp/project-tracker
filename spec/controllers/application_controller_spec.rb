@@ -72,4 +72,11 @@ describe ApplicationController do
       expect(page).to have_current_path("/login")
     end
   end
+
+  describe "Logout" do
+    it "Redirects the user to the homepage" do
+      visit "/logout"
+      expect(page).to have_current_path("/")
+    end
+  end
 end
