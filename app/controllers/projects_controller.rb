@@ -2,7 +2,10 @@ class ProjectsController < ApplicationController
 
   # GET: /projects
   get "/projects" do
-    erb :"/projects/index.html"
+    as_current_user do |user|
+      @projects = user.projects
+      erb :"/projects/index"
+    end
   end
 
   # GET: /projects/new

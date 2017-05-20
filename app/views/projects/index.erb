@@ -1,1 +1,5 @@
-<h1>This is the Model's index page.</h1>
+<ul>
+  <% @projects.each do |project| %>
+  <li><a href="/projects/<%=project.id%>"><%=project.name%></a></li>
+  <% end %>
+</ul>
