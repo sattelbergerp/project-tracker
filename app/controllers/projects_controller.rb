@@ -10,12 +10,22 @@ class ProjectsController < ApplicationController
 
   # GET: /projects/new
   get "/projects/new" do
-    erb :"/projects/new.html"
+    as_current_user do |user|
+      erb :"/projects/new"
+    end
   end
 
   # POST: /projects
   post "/projects" do
-    redirect "/projects"
+    as_current_user do |user|
+      project = Project.new(params[:project])
+      project.user = user
+      if project.save
+        redirect "/projects/#{project.id}"
+      else
+        redirect "/projects/new"
+      end
+    end
   end
 
   # GET: /projects/5

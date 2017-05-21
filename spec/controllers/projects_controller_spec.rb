@@ -38,8 +38,8 @@ describe ProjectsController do
       fill_in "name", with: "Test Project"
       fill_in "description", with: "Test Description"
       click_on "create-project"
-      project = Projects.last
-      expect(page).to have_current_path("/projects/"+project.id)
+      project = Project.last
+      expect(page).to have_current_path("/projects/#{project.id}")
       expect(project.name).to eq("Test Project")
       expect(project.description).to eq("Test Description")
       expect(project.user).to eq(user)
@@ -53,14 +53,6 @@ describe ProjectsController do
       visit "/projects/new"
       fill_in "name", with: ""
       fill_in "description", with: "Test Description"
-      click_on "create-project"
-      expect(page).to have_current_path("/projects/new")
-    end
-    it "Doesn't let a user create a project with an empty description" do
-      user = create_and_login_user('user','pass')
-      visit "/projects/new"
-      fill_in "name", with: "Test Project"
-      fill_in "description", with: ""
       click_on "create-project"
       expect(page).to have_current_path("/projects/new")
     end
