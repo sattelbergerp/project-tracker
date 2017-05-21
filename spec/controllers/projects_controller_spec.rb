@@ -81,4 +81,24 @@ describe ProjectsController do
       expect(page).to have_current_path("/projects")
     end
   end
+  describe "project editing" do
+    it "allows the user to edit a project they created" do
+      user = create_and_login_user('user','pass')
+      project = Project.create(name:"Initial Name", description:"Initial Description")
+      visit "/projects/#{project.id}/edit"
+      fill_in "name", with: "Updated Name"
+      fill_in "description", with: "Updated Description"
+      click_on "update-project"
+      expect(page).to have_current_path("/projects/#{project.id}")
+      expect(project.name).to eq("Updated Name")
+      expect(project.description).to eq("Updated Description")
+    end
+    it "Doesn't allow another user to edit the project" do
+      user = create_and_login_user('user','pass')
+      creator = User.create(name:"a",email:"a",password:"a")
+      project = Project.create(name: 'Test Project', description: "Test Description", user: creator)
+      visit "/projects/#{project.id}/edit"
+      expect(page).to have_current_path("/projects")
+    end
+  end
 end
