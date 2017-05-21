@@ -50,12 +50,22 @@ class ApplicationController < Sinatra::Base
     def current_user
       @logged_in_user ||= User.find_by(id: session[:user_id])
     end
+
     def logged_in?
       !!current_user
     end
+
     def as_current_user(redirect_url="/")
       if logged_in?
         yield(current_user)
+      else
+        redirect redirect_url
+      end
+    end
+
+    def as_specific_user(user, redirect_url="/")
+      if user==current_user
+        yield(user)
       else
         redirect redirect_url
       end
