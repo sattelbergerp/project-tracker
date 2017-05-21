@@ -57,4 +57,28 @@ describe ProjectsController do
       expect(page).to have_current_path("/projects/new")
     end
   end
+
+  describe "project view" do
+    it "Shows the project and task infomation when logged in as the user that created it" do
+      user = create_and_login_user('user','pass')
+      project = Project.create(name: 'Test Project', description: "Test Description", user: user)
+      project.tasks.create(name: 'Test Task 1')
+      project.tasks.create(name: 'Test Task 2')
+
+      visit "/projects/#{project.id}"
+      expect(page).to have_content(project.name)
+      expect(page).to have_content(project.description)
+
+      project.tasks.each do |task|
+        expect(page).to have_content(task.name)
+      end
+    end
+    it "does not let a user view a project they did not create" do
+      user = create_and_login_user('user','pass')
+      creator = User.create(name:"a",email:"a",password:"a")
+      project = Project.create(name: 'Test Project', description: "Test Description", user: creator)
+      visit "/projects/#{project.id}"
+      expect(page).to have_current_path("/projects")
+    end
+  end
 end
