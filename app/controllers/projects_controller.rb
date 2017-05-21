@@ -30,7 +30,14 @@ class ProjectsController < ApplicationController
 
   # GET: /projects/5
   get "/projects/:id" do
-    erb :"/projects/show.html"
+    as_current_user do |user|
+      @project = user.projects.find_by(id: params[:id])
+      if @project
+        erb :"/projects/show"
+      else
+        redirect "/projects"
+      end
+    end
   end
 
   # GET: /projects/5/edit
