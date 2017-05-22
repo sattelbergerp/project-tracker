@@ -1,4 +1,11 @@
-<h3><%=@project.name%></h3>
+<div>
+  <h3><%=@project.name%></h3>
+  <a href="/projects/<%=@project.id%>/edit">Edit</a>
+  <form action="/projects/<%=@project.id%>/delete" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" id="delete-project" value="Delete">
+  </form>
+</div>
 <p><%=@project.description%></p>
 <ul>
   <%@project.tasks.each do |task|%>
