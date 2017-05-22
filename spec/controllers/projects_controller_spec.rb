@@ -102,4 +102,23 @@ describe ProjectsController do
       expect(page).to have_current_path("/projects")
     end
   end
+  describe "project deleting" do
+    it "allows the user to delete a project they created" do
+      user = create_and_login_user('user','pass')
+      project = Project.create(name:"Name", description:"Description", user: user)
+      visit "/projects/#{project.id}"
+      click_on "delete-project"
+      project2 = Project.find(project.id)
+      expect(project2).to be(nil)
+    end
+    it "Doesn't allow another user to delete the project" do
+      user = create_and_login_user('user','pass')
+      creator = User.create(name:"a",email:"a",password:"a")
+      project = Project.create(name: 'Test Project', description: "Test Description", user: creator)
+      visit "/projects/#{project.id}"
+      click_on "delete-project"
+      project2 = Project.find(project.id)
+      expect(project2).not_to be(nil)
+    end
+  end
 end
