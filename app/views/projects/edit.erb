@@ -1,0 +1,7 @@
+<form action="/projects/<%=@project.id%>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+  <input type="text" name="project[name]" id ="name" value="<%=@project.name%>"><br>
+  <textarea type="text" name="project[description]" id ="description"><%=@project.description%></textarea><br>
+  <input type="submit" id="update-project" value="Update Project">
+  <a href="/projects/<%=@project.id%>">Cancel</a>
+<form>

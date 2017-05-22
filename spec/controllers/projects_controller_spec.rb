@@ -84,11 +84,12 @@ describe ProjectsController do
   describe "project editing" do
     it "allows the user to edit a project they created" do
       user = create_and_login_user('user','pass')
-      project = Project.create(name:"Initial Name", description:"Initial Description")
+      project = Project.create(name:"Initial Name", description:"Initial Description", user: user)
       visit "/projects/#{project.id}/edit"
       fill_in "name", with: "Updated Name"
       fill_in "description", with: "Updated Description"
       click_on "update-project"
+      project = Project.find(project.id)
       expect(page).to have_current_path("/projects/#{project.id}")
       expect(project.name).to eq("Updated Name")
       expect(project.description).to eq("Updated Description")
