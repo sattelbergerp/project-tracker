@@ -12,6 +12,7 @@ gem "require_all"
 gem "sqlite3"
 gem "shotgun"
 gem "tux"
+gem 'sinatra-flash'
 
 group :test do
   gem "rspec"

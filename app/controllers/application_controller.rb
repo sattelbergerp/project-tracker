@@ -7,6 +7,7 @@ class ApplicationController < Sinatra::Base
     set :views, 'app/views'
     enable :sessions
     set :session_secret, "we5gtr7hyu8i"
+    register Sinatra::Flash
   end
 
   get "/" do
@@ -77,6 +78,11 @@ class ApplicationController < Sinatra::Base
       else
         redirect redirect_url
       end
+    end
+
+    def redirect_with_error(path, content)
+      flash[:error] = content
+      redirect path
     end
   end
 
