@@ -31,10 +31,18 @@
         <ul class="nav navbar-nav">
           <%if logged_in?%>
             <li class="<%='active' if @request.path=='/projects'%>"    ><a href="/projects">Projects</a></li>
-            <li class="<%='active' if @request.path=='/tasks'%>"       ><a href="/tasks" >Tasks</a></li>
+            <li class="<%='active' if @request.path=='/tasks'%>"       ><a href=" /tasks" >Tasks</a></li>
             <li class="<%='active' if @request.path=='/projects/new'%>"><a href="/projects/new">New Project</a></li>
             <li class="<%='active' if @request.path=='/tasks/new'%>"   ><a href="/tasks/new">New Task</a></li>
 
+          <% else %>
+          <li class="<%='active' if @request.path=='/login'%>"    ><a href="/login">Login</a></li>
+          <li class="<%='active' if @request.path=='/signup'%>"       ><a href=" /signup" >Signup</a></li>
+          <% end %>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <%if logged_in?%>
+            <li><a href="/logout">Logout <%=current_user.name%></a></li>
           <% end %>
         </ul>
       </div><!--/.nav-collapse -->
@@ -50,5 +58,5 @@
     </footer>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
 </body>
