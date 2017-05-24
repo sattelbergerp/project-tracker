@@ -14,7 +14,11 @@ class ApplicationController < Sinatra::Base
   end
 
   get "/signup" do
-    erb :signup
+    if logged_in?
+      redirect "/projects"
+    else
+      erb :signup
+    end
   end
 
   post "/signup" do
@@ -28,7 +32,11 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/login' do
-    erb :login
+    if logged_in?
+      redirect "/projects"
+    else
+      erb :login
+    end
   end
 
   post '/login' do
