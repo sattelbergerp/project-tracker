@@ -13,7 +13,7 @@ class Task < ActiveRecord::Base
     if dif > 0
       "#{dif} days from now"
     elsif dif < 0
-      "#{dif} days ago"
+      "#{-dif} days ago"
     else
       "today"
     end

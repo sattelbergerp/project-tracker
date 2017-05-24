@@ -1,0 +1,17 @@
+<form action="/tasks/<%=@task.id%>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+  Name: <input type="text" name="task[name]" id="name" value="<%=@task.name%>"><br>
+  Complete By (Optional): <input type="date" name="complete_by" id="complete-by" value="<%=@task.complete_by.strftime('%Y-%m-%d')%>"><br>
+  Projects (Must select at least one):
+  <ul>
+    <% @projects.each do |project|%>
+      <li>
+        <input type="checkbox" name="task[project_ids][]" value="<%=project.id%>" id="project_<%=project.id%>" <%='checked' if @task.projects.include?(project)%>>
+        <label for="project_<%=project.id%>"><%=project.name%></label>
+      </li>
+    <% end %>
+  </ul>
+  <textarea type="text" name="task[description]" id ="description"><%=@task.description%></textarea><br>
+  <input type="submit" id="update-task" value="Update Task">
+  <a href="/tasks/<%=@task.id%>">Cancel</a>
+</form>

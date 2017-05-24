@@ -110,15 +110,15 @@ describe TasksController do
     it "Allows a user to edit their own task" do
       user = create_and_login_user('user','pass')
       task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
-      project1 = task.projects.create(name: "Project 1")
-      project2 = Project.create(name: "Project 2")
-      project3 = task.projects.create(name: "Project 3")
+      project1 = task.projects.create(name: "Project 1", user:user)
+      project2 = Project.create(name: "Project 2", user:user)
+      project3 = task.projects.create(name: "Project 3", user:user)
       visit "/tasks/#{task.id}/edit"
       fill_in "name", with: "Updated Name"
-      fill_in "description", with: "Test Description"
+      fill_in "description", with: "Updated Description"
       fill_in "complete-by", with: Date.rfc822 # Returns date of Mon, 1 Jan -4712
-      uncheck "project_#{project1.id}"
-      check "project_#{project2.id}"
+      uncheck "project_1"
+      check "project_2"
       click_on "update-task"
       expect(page).to have_current_path("/tasks/#{task.id}")
       task.reload
@@ -132,7 +132,7 @@ describe TasksController do
     it "requires there to be a name" do
       user = create_and_login_user('user','pass')
       task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
-      project1 = task.projects.create(name: "Project 1")
+      project1 = task.projects.create(name: "Project 1", user:user)
       visit "/tasks/#{task.id}/edit"
       fill_in "name", with: ""
       click_on "update-task"
@@ -141,9 +141,9 @@ describe TasksController do
     it "requires at least one project" do
       user = create_and_login_user('user','pass')
       task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
-      project1 = task.projects.create(name: "Project 1")
+      project1 = task.projects.create(name: "Project 1", user:user)
       visit "/tasks/#{task.id}/edit"
-      uncheck "project_#{project1.id}"
+      uncheck "project_1"
       click_on "update-task"
       expect(page).to have_current_path("/tasks/#{task.id}/edit")
     end
