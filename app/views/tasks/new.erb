@@ -1,7 +1,9 @@
-<form action="/tasks" method="POST">
-  Name: <input type="text" name="task[name]" id="name"><br>
-  Complete By (Optional): <input type="date" name="complete_by" id="complete-by"><br>
-  Add to Projects:
+<form action="/tasks" method="POST" class="form-group">
+  <label for="name">Name:</label>
+  <input type="text" name="task[name]" id="name" class="form-control"><br>
+  <label for="complete-by">Complete By (Optional):</label>
+  <input type="date" name="complete_by" id="complete-by" class="form-control"><br>
+  <label>Add to projects (select at least one):</label>
   <div class="list-group">
     <% @projects.each do |project|%>
       <label for="project_<%=project.id%>" class="list-group-item">
@@ -10,6 +12,7 @@
       </label>
     <% end %>
   </div>
-  <textarea type="text" name="task[description]" id ="description"></textarea><br>
-  <input type="submit" id="create-task" value="Create Task">
+  <label for="description">Description:</label>
+  <textarea type="text" name="task[description]" id ="description" class="form-control" rows="4"></textarea><br>
+  <input type="submit" id="create-task" value="Create Task" class="btn btn-default">
 </form>
