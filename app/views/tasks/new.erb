@@ -2,14 +2,14 @@
   Name: <input type="text" name="task[name]" id="name"><br>
   Complete By (Optional): <input type="date" name="complete_by" id="complete-by"><br>
   Add to Projects:
-  <ul>
+  <div class="list-group">
     <% @projects.each do |project|%>
-      <li>
+      <label for="project_<%=project.id%>" class="list-group-item">
         <input type="checkbox" name="task[project_ids][]" value="<%=project.id%>" id="project_<%=project.id%>">
-        <label for="project_<%=project.id%>"><%=project.name%></label>
-      </li>
+        <%=project.name%>
+      </label>
     <% end %>
-  </ul>
+  </div>
   <textarea type="text" name="task[description]" id ="description"></textarea><br>
   <input type="submit" id="create-task" value="Create Task">
 </form>

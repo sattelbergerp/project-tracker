@@ -7,8 +7,8 @@
   </form>
 </div>
 <p><%=@project.description%></p>
-<ul>
+<div class="list-group">
   <%@project.tasks.each do |task|%>
-    <li><a href="/tasks/<%=task.id%>"><%=task.name%></a></li>
+    <a class="list-group-item" href="/tasks/<%=task.id%>"><%=task.name%></a>
   <%end%>
-</ul>
+</div>
