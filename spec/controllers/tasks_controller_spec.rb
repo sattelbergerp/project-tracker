@@ -155,4 +155,14 @@ describe TasksController do
       expect(page).to have_current_path("/tasks")
     end
   end
+  describe "delete task" do
+    it "deletes the task" do
+      user = create_and_login_user('user','pass')
+      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
+      visit "/tasks/#{task.id}/"
+      click_on "delete-task"
+      expect(page).to have_current_path("/tasks")
+      expect(Task.find_by(id: task.id)).to eq(nil)
+    end
+  end
 end
