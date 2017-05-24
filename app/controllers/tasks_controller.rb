@@ -1,5 +1,12 @@
 class TasksController < ApplicationController
 
+  get '/tasks' do
+    as_current_user do |user|
+      @tasks = user.tasks
+      erb :'tasks/index'
+    end
+  end
+
   get '/tasks/new' do
     as_current_user do |user|
       @projects = user.projects
