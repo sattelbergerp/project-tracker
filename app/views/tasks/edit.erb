@@ -1,17 +1,28 @@
 <form action="/tasks/<%=@task.id%>" method="POST">
   <input type="hidden" name="_method" value="PATCH">
-  Name: <input type="text" name="task[name]" id="name" value="<%=@task.name%>"><br>
-  Complete By (Optional): <input type="date" name="complete_by" id="complete-by" value="<%=@task.complete_by.strftime('%Y-%m-%d') if @task.complete_by%>"><br>
-  Projects (Must select at least one):
-  <div class="list-group">
-    <% @projects.each do |project|%>
-      <label for="project_<%=project.id%>" class="list-group-item">
-        <input type="checkbox" name="task[project_ids][]" value="<%=project.id%>" id="project_<%=project.id%>" <%='checked' if @task.projects.include?(project)%>>
-        <%=project.name%>
-      </label>
-    <% end %>
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" name="task[name]" id="name" value="<%=@task.name%>" class="form-control">
   </div>
-  <textarea type="text" name="task[description]" id ="description"><%=@task.description%></textarea><br>
-  <input type="submit" id="update-task" value="Update Task">
-  <a href="/tasks/<%=@task.id%>">Cancel</a>
+  <div class="form-group">
+    <label for="complete-by">Complete By (Optional):</label>
+    <input type="date" name="complete_by" id="complete-by" value="<%=@task.complete_by.strftime('%Y-%m-%d') if @task.complete_by%>" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Add to projects (select at least one):</label>
+    <div class="list-group">
+      <% @projects.each do |project|%>
+        <label for="project_<%=project.id%>" class="list-group-item">
+          <input type="checkbox" name="task[project_ids][]" value="<%=project.id%>" id="project_<%=project.id%>" <%='checked' if @task.projects.include?(project)%>>
+          <%=project.name%>
+        </label>
+      <% end %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea type="text" name="task[description]" id ="description" class="form-control" rows="4"><%=@task.description%></textarea>
+  </div>
+  <input type="submit" id="update-task" value="Update Task" class="btn btn-primary">
+  <a href="/tasks/<%=@task.id%>" class="btn btn-default">Cancel</a>
 </form>
