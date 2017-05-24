@@ -1,18 +1,26 @@
-<form action="/tasks" method="POST" class="form-group">
-  <label for="name">Name:</label>
-  <input type="text" name="task[name]" id="name" class="form-control"><br>
-  <label for="complete-by">Complete By (Optional):</label>
-  <input type="date" name="complete_by" id="complete-by" class="form-control"><br>
-  <label>Add to projects (select at least one):</label>
-  <div class="list-group">
-    <% @projects.each do |project|%>
-      <label for="project_<%=project.id%>" class="list-group-item">
-        <input type="checkbox" name="task[project_ids][]" value="<%=project.id%>" id="project_<%=project.id%>">
-        <%=project.name%>
-      </label>
-    <% end %>
+<form action="/tasks" method="POST">
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" name="task[name]" id="name" class="form-control">
   </div>
-  <label for="description">Description:</label>
-  <textarea type="text" name="task[description]" id ="description" class="form-control" rows="4"></textarea><br>
+  <div class="form-group">
+    <label for="complete-by">Complete By (Optional):</label>
+    <input type="date" name="complete_by" id="complete-by" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Add to projects (select at least one):</label>
+    <div class="list-group">
+      <% @projects.each do |project|%>
+        <label for="project_<%=project.id%>" class="list-group-item">
+          <input type="checkbox" name="task[project_ids][]" value="<%=project.id%>" id="project_<%=project.id%>">
+          <%=project.name%>
+        </label>
+      <% end %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea type="text" name="task[description]" id ="description" class="form-control" rows="4"></textarea>
+  </div>
   <input type="submit" id="create-task" value="Create Task" class="btn btn-default">
 </form>
