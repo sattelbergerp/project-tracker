@@ -38,13 +38,18 @@ describe ApplicationController do
       click_on "signup"
       expect(page).to have_current_path("/signup")
     end
-    it "Does not allow a user with an empty username" do
+    it "Does not allow a user with an empty password" do
       visit "/signup"
       fill_in('name', with: 'Test User')
       fill_in('email', with: 'Test Email')
       fill_in('password', with: '')
       click_on "signup"
       expect(page).to have_current_path("/signup")
+    end
+    it "Redirects to the projects index if already signed in" do
+      user = create_and_login_user('user','pass')
+      visit "/signup"
+      expect(page).to have_current_path("/projects")
     end
   end
 
@@ -70,6 +75,11 @@ describe ApplicationController do
       fill_in('password', with: 'Password2')
       click_on "login"
       expect(page).to have_current_path("/login")
+    end
+    it "Redirects to the projects index if already signed in" do
+      user = create_and_login_user('user','pass')
+      visit "/signup"
+      expect(page).to have_current_path("/projects")
     end
   end
 
