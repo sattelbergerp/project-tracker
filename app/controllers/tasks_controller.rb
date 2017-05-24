@@ -10,9 +10,10 @@ class TasksController < ApplicationController
   post '/tasks' do
     as_current_user do |user|
       if params[:complete_by] && !params[:complete_by].empty?
-        params[:task][:complete_by] = DateTime.parse(params[:complete_by])
+        params[:task][:complete_by] = Date.parse(params[:complete_by])
       end
       task = Task.new(params[:task])
+      task.user = user
       if params[:task][:project_ids] && task.save
         redirect "/tasks/#{task.id}"
       else

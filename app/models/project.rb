@@ -4,4 +4,5 @@ class Project < ActiveRecord::Base
   has_many :tasks, through: :project_tasks
 
   validates :name, presence: true
+  validates :user, presence: true
 end
