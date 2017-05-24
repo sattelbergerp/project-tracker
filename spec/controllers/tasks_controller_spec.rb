@@ -5,6 +5,19 @@ def app
 end
 
 describe TasksController do
+  describe "task index" do
+    it "Allows a logged in user to view only their tasks" do
+      user = create_and_login_user('user','pass')
+      user2 = User.create(name:'a',email:'a',password:'a')
+      task1 = Task.create(name:"Task 1", user:user)
+      task2 = Task.create(name:"Task 2", user:user)
+      task3 = Task.create(name:"Task 3", user:user2)
+      visit "/tasks"
+      expect(page).to have_content("Task 1")
+      expect(page).to have_content("Task 2")
+      expect(page).not_to have_content("Task 3")
+    end
+  end
   describe "new task" do
     it "Allows a logged in user to create a new task" do
       date = Date.today
