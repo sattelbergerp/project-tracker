@@ -57,7 +57,7 @@ class TasksController < ApplicationController
       if params[:complete_by] && !params[:complete_by].empty?
         params[:task][:complete_by] = Date.parse(params[:complete_by])
       end
-      task = Task.find_by(id: params[:id])
+      task = user.tasks.find_by(id: params[:id])
       if task
         task.update(params[:task])
         if params[:task][:project_ids] && task.save
@@ -68,6 +68,14 @@ class TasksController < ApplicationController
       else
         redirect "/tasks"
       end
+    end
+  end
+
+  delete '/tasks/:id/delete' do
+    as_current_user do |user|
+      task = user.tasks.find_by(id: params[:id])
+      task.delete if task
+      redirect "/tasks"
     end
   end
 

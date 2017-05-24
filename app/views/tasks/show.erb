@@ -1,4 +1,11 @@
-<h3><%=@task.name%></h3>
+<div>
+  <h3><%=@task.name%></h3>
+  <a href="/tasks/<%=@task.id%>/edit">Edit</a>
+  <form action="/tasks/<%=@task.id%>/delete" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" id="delete-task" value="Delete">
+  </form>
+</div>
 <% if @task.complete_by %>
   <p>Complete By: <%=@task.complete_by_str%></p>
 <% end %>
