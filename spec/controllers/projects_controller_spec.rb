@@ -62,8 +62,8 @@ describe ProjectsController do
     it "Shows the project and task infomation when logged in as the user that created it" do
       user = create_and_login_user('user','pass')
       project = Project.create(name: 'Test Project', description: "Test Description", user: user)
-      project.tasks.create(name: 'Test Task 1')
-      project.tasks.create(name: 'Test Task 2')
+      project.tasks.create(name: 'Test Task 1', user: user)
+      project.tasks.create(name: 'Test Task 2', user: user)
 
       visit "/projects/#{project.id}"
       expect(page).to have_content(project.name)

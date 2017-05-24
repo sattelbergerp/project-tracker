@@ -22,4 +22,15 @@ class TasksController < ApplicationController
     end
   end
 
+  get '/tasks/:id' do
+    as_current_user do |user|
+      @task = user.tasks.find_by(id: params[:id])
+      if @task
+        erb :'tasks/show'
+      else
+        redirect "/tasks"
+      end
+    end
+  end
+
 end

@@ -1,0 +1,11 @@
+<h3><%=@task.name%></h3>
+<% if @task.complete_by %>
+  <p>Complete By: <%=@task.complete_by_str%></p>
+<% end %>
+<p><%=@task.description%></p>
+<h3>In Projects:</h3>
+<ul>
+  <% @task.projects.each do |project|%>
+    <li><a href="/projects/<%=project.id%>"><%=project.name%></a></li>
+  <% end %>
+</ul>
