@@ -106,4 +106,53 @@ describe TasksController do
         expect(page).to have_current_path("/tasks")
     end
   end
+  describe "edit task" do
+    it "Allows a user to edit their own task" do
+      user = create_and_login_user('user','pass')
+      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
+      project1 = task.projects.create(name: "Project 1")
+      project2 = Project.create(name: "Project 2")
+      project3 = task.projects.create(name: "Project 3")
+      visit "/tasks/#{task.id}/edit"
+      fill_in "name", with: "Updated Name"
+      fill_in "description", with: "Test Description"
+      fill_in "complete-by", with: Date.rfc822 # Returns date of Mon, 1 Jan -4712
+      uncheck "project_#{project1.id}"
+      check "project_#{project2.id}"
+      click_on "update-task"
+      expect(page).to have_current_path("/tasks/#{task.id}")
+      task.reload
+      expect(task.name).to eq("Updated Name")
+      expect(task.description).to eq("Updated Description")
+      expect(task.complete_by).to eq(Date.rfc822)
+      expect(task.projects.include?(project1)).to eq(false)
+      expect(task.projects.include?(project2)).to eq(true)
+      expect(task.projects.include?(project3)).to eq(true)
+    end
+    it "requires there to be a name" do
+      user = create_and_login_user('user','pass')
+      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
+      project1 = task.projects.create(name: "Project 1")
+      visit "/tasks/#{task.id}/edit"
+      fill_in "name", with: ""
+      click_on "update-task"
+      expect(page).to have_current_path("/tasks/#{task.id}/edit")
+    end
+    it "requires at least one project" do
+      user = create_and_login_user('user','pass')
+      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
+      project1 = task.projects.create(name: "Project 1")
+      visit "/tasks/#{task.id}/edit"
+      uncheck "project_#{project1.id}"
+      click_on "update-task"
+      expect(page).to have_current_path("/tasks/#{task.id}/edit")
+    end
+    it "only lets a user edit a project they created" do
+      user = create_and_login_user('user','pass')
+      creator = User.create(name:'a',email:'a',password:'a')
+      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:creator)
+      visit "/tasks/#{task.id}/edit"
+      expect(page).to have_current_path("/tasks")
+    end
+  end
 end
