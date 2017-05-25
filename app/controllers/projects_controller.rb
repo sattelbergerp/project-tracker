@@ -72,7 +72,12 @@ class ProjectsController < ApplicationController
   delete "/projects/:id/delete" do
     as_current_user do |user|
       project = user.projects.find_by(params[:id])
-      project.delete if project
+      if project
+        project.tasks.each do |task|
+          task.delete if task.projects.count <= 1
+        end
+        project.delete
+      end
       redirect "/projects"
     end
   end

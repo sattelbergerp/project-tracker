@@ -111,5 +111,20 @@ describe ProjectsController do
       project2 = Project.find_by(project.id)
       expect(project2).to be(nil)
     end
+    it "deletes tasks only associated with itself" do
+      user = create_and_login_user('user','pass')
+      project = Project.create(name:"Name", description:"Description", user: user)
+      project2 = Project.create(name:"Name2", description:"Description", user: user)
+      task1 = project.tasks.create(name:'Task 1', user: user)
+      task2 = project.tasks.create(name:'Task 2', user: user)
+      task3 = project.tasks.create(name:'Task 3', user: user)
+      task1.projects.append(project2)
+      task3.projects.append(project2)
+      visit "/projects/#{project.id}"
+      click_on "delete-project"
+      expect(Task.find_by(id: task1.id)).to eq(task1)
+      expect(Task.find_by(id: task2.id)).to eq(nil)
+      expect(Task.find_by(id: task3.id)).to eq(task3)
+    end
   end
 end
