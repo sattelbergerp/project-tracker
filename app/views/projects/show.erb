@@ -1,14 +1,15 @@
-<div>
-  <h3><%=@project.name%></h3>
-  <a href="/projects/<%=@project.id%>/edit">Edit</a>
-  <form action="/projects/<%=@project.id%>/delete" method="POST">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" id="delete-project" value="Delete">
-  </form>
-</div>
+<h3 class="clearfix">
+  <%=@project.name%>
+  <a href="/projects/<%=@project.id%>/edit" class="right btn btn-default">Edit</a>
+</h3>
 <p><%=@project.description%></p>
 <div class="list-group">
   <%@project.tasks.each do |task|%>
     <a class="list-group-item" href="/tasks/<%=task.id%>"><%=task.name%></a>
   <%end%>
 </div>
+<form action="/projects/<%=@project.id%>/delete" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" id="delete-project" value="Delete" class="btn btn-danger">
+  <span class="warning"> This will delete all tasks only associated with this project (need to implement this).</span>
+</form>

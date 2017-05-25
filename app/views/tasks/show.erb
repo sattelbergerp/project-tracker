@@ -1,11 +1,7 @@
-<div>
-  <h3><%=@task.name%></h3>
-  <a href="/tasks/<%=@task.id%>/edit">Edit</a>
-  <form action="/tasks/<%=@task.id%>/delete" method="POST">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" id="delete-task" value="Delete">
-  </form>
-</div>
+<h3 class="clearfix">
+  <%=@task.name%>
+  <a href="/tasks/<%=@task.id%>/edit" class="right btn btn-default">Edit</a>
+</h3>
 <% if @task.complete_by %>
   <p>Complete By: <%=@task.complete_by_str%></p>
 <% end %>
@@ -16,3 +12,7 @@
     <a class="list-group-item" href="/projects/<%=project.id%>"><%=project.name%></a>
   <% end %>
 </div>
+<form action="/tasks/<%=@task.id%>/delete" method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" id="delete-task" value="Delete" class="btn btn-danger">
+</form>

@@ -1,0 +1,12 @@
+.warning{
+  color: red;
+  font-weight: bold;
+}
+
+.show-header{
+  clear:both;
+}
+
+.right{
+  float: right;
+}
