@@ -24,7 +24,11 @@ class TasksController < ApplicationController
       if params[:task][:project_ids] && task.save
         redirect "/tasks/#{task.id}"
       else
-        redirect "/tasks/new"
+        if params[:task][:project_ids]
+          redirect_with_error "/tasks/new", task.errors
+        else
+          redirect_with_error "/tasks/new", "You must select at least one project."
+        end
       end
     end
   end
@@ -35,7 +39,7 @@ class TasksController < ApplicationController
       if @task
         erb :'tasks/show'
       else
-        redirect "/tasks"
+        redirect_with_error "/tasks", "We couldn't find that task."
       end
     end
   end
@@ -47,7 +51,7 @@ class TasksController < ApplicationController
       if @task
         erb :'tasks/edit'
       else
-        redirect "/tasks"
+        redirect_with_error "/tasks", "We couldn't find that task."
       end
     end
   end
@@ -63,10 +67,14 @@ class TasksController < ApplicationController
         if params[:task][:project_ids] && task.save
           redirect "/tasks/#{task.id}"
         else
-          redirect "/tasks/#{task.id}/edit"
+          if params[:task][:project_ids]
+            redirect_with_error "/tasks/#{task.id}/edit", task.errors
+          else
+            redirect_with_error "/tasks/#{task.id}/edit", "You must select at least one project."
+          end
         end
       else
-        redirect "/tasks"
+        redirect_with_error "/tasks", "We couldn't find that task."
       end
     end
   end

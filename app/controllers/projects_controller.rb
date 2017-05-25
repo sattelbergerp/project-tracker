@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
       if project.save
         redirect "/projects/#{project.id}"
       else
-        redirect "/projects/new"
+        redirect_with_error "/projects/new", project.errors
       end
     end
   end
@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
       if @project
         erb :"/projects/show"
       else
-        redirect "/projects"
+        redirect_with_error "/projects", "We couldn't find that project."
       end
     end
   end
@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
       if @project
         erb :"/projects/edit"
       else
-        redirect "/projects"
+        redirect_with_error "/projects", "We couldn't find that project."
       end
     end
   end
@@ -60,10 +60,10 @@ class ProjectsController < ApplicationController
         if project.update(params[:project])
           redirect "/projects/#{project.id}"
         else
-          redirect "/projects/#{project.id}/edit"
+          redirect_with_error "/projects/#{project.id}/edit", project.errors
         end
       else
-        redirect "/projects"
+        redirect_with_error "/projects", "We couldn't find that project."
       end
     end
   end

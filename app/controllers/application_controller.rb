@@ -28,7 +28,7 @@ class ApplicationController < Sinatra::Base
       session[:user_id] = user.id;
       redirect "/projects"
     else
-      redirect "/signup"
+      redirect_with_error "/signup", user.errors
     end
   end
 
@@ -46,7 +46,7 @@ class ApplicationController < Sinatra::Base
       session[:user_id] = user.id;
       redirect "/projects"
     else
-      redirect "/login"
+      redirect_with_error "/login", "Invalid username or password."
     end
   end
 
@@ -68,7 +68,7 @@ class ApplicationController < Sinatra::Base
       if logged_in?
         yield(current_user)
       else
-        redirect redirect_url
+        redirect_with_error redirect_url, "You must be logged in to access that."
       end
     end
 
@@ -81,7 +81,11 @@ class ApplicationController < Sinatra::Base
     end
 
     def redirect_with_error(path, content)
-      flash[:error] = content
+      if content.class==ActiveModel::Errors
+        flash[:error] = content.to_a.join('.<br>')+'.'
+      else
+        flash[:error] = content
+      end
       redirect path
     end
   end
