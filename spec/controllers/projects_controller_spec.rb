@@ -62,7 +62,7 @@ describe ProjectsController do
     it "Shows the project and task infomation when logged in as the user that created it" do
       user = create_and_login_user('user','pass')
       project = Project.create(name: 'Test Project', description: "Test Description", user: user)
-      project.tasks.create(name: 'Test Task 1', user: user)
+      project.tasks.create(name: 'Test Task 1', user: user, complete_by: Date.today)
       project.tasks.create(name: 'Test Task 2', user: user)
 
       visit "/projects/#{project.id}"
@@ -71,6 +71,7 @@ describe ProjectsController do
 
       project.tasks.each do |task|
         expect(page).to have_content(task.name)
+        expect(page).to have_content(task.complete_by_str)
       end
     end
     it "does not let a user view a project they did not create" do

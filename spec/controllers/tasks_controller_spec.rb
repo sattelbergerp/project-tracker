@@ -9,11 +9,12 @@ describe TasksController do
     it "Allows a logged in user to view only their tasks" do
       user = create_and_login_user('user','pass')
       user2 = User.create(name:'a',email:'a',password:'a')
-      task1 = Task.create(name:"Task 1", user:user)
+      task1 = Task.create(name:"Task 1", user:user, complete_by: Date.jd(Date.today.jd-5))
       task2 = Task.create(name:"Task 2", user:user)
       task3 = Task.create(name:"Task 3", user:user2)
       visit "/tasks"
       expect(page).to have_content("Task 1")
+      expect(page).to have_content(task1.complete_by_str)
       expect(page).to have_content("Task 2")
       expect(page).not_to have_content("Task 3")
     end
@@ -80,7 +81,7 @@ describe TasksController do
 
       expect(page).to have_content("Sample Task")
       expect(page).to have_content("Sample Description")
-      expect(page).to have_content("5 days from now")
+      expect(page).to have_content("5 day(s) from now")
       expect(page).to have_content("Project 1")
       expect(page).to have_content("Project 2")
     end
@@ -96,7 +97,7 @@ describe TasksController do
       date = Date.jd(Date.today.jd-5)
       task = Task.create(name: "Sample Task", description: "Sample Description", complete_by: date, user:user)
       visit "/tasks/#{task.id}"
-      expect(page).to have_content("5 days ago")
+      expect(page).to have_content("5 day(s) ago")
     end
     it "does not let a user who did not create it view it" do
       user = create_and_login_user('user','pass')

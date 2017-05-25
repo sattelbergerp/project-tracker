@@ -11,9 +11,9 @@ class Task < ActiveRecord::Base
     return "" unless complete_by
     dif = complete_by.jd - Date.today.jd
     if dif > 0
-      "#{dif} days from now"
+      "#{dif} day(s) from now"
     elsif dif < 0
-      "#{-dif} days ago"
+      "#{-dif} day(s) ago"
     else
       "today"
     end
