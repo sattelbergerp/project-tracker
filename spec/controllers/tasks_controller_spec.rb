@@ -64,6 +64,17 @@ describe TasksController do
       click_on "create-task"
       expect(page).to have_current_path("/tasks/new")
     end
+    it "does not allow an invalid date" do
+      user = create_and_login_user('user','pass')
+      project1 = Project.create(name: "Project 1", user:user)
+      visit "/tasks/new"
+      fill_in "name", with: "Test Task"
+      fill_in "description", with: "Test Description"
+      fill_in "complete-by", with: "4/6/17"
+      check "project_1"
+      click_on "create-task"
+      expect(page).to have_current_path("/tasks/new")
+    end
     it "Does not allow a user who is not logged in to create a new task" do
       visit "/tasks/new"
       expect(page).to have_current_path("/")
@@ -145,6 +156,17 @@ describe TasksController do
       project1 = task.projects.create(name: "Project 1", user:user)
       visit "/tasks/#{task.id}/edit"
       uncheck "project_1"
+      click_on "update-task"
+      expect(page).to have_current_path("/tasks/#{task.id}/edit")
+    end
+    it "does not allow an invalid date" do
+      user = create_and_login_user('user','pass')
+      project1 = Project.create(name: "Project 1", user:user)
+      visit "/tasks/#{task.id}/edit"
+      fill_in "name", with: "Test Task"
+      fill_in "description", with: "Test Description"
+      fill_in "complete-by", with: "4/6/17"
+      check "project_1"
       click_on "update-task"
       expect(page).to have_current_path("/tasks/#{task.id}/edit")
     end
