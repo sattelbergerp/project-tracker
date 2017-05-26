@@ -30,6 +30,7 @@ describe TasksController do
       fill_in "name", with: "Test Task"
       fill_in "description", with: "Test Description"
       fill_in "complete-by", with: date.rfc822
+      check "completed"
       check "project_2"
       check "project_3"
       click_on "create-task"
@@ -37,6 +38,7 @@ describe TasksController do
       task = Task.last
       expect(task.name).to eq("Test Task")
       expect(task.description).to eq("Test Description")
+      expect(completed).to eq(true)
       expect(task.complete_by.strftime('%s')).to eq(date.strftime('%s'))
       expect(task.projects.include?(project2)).to eq(true)
       expect(task.projects.include?(project3)).to eq(true)
@@ -86,13 +88,14 @@ describe TasksController do
       date = Date.jd(Date.today.jd+5)
       user = create_and_login_user('user','pass')
       project1 = Project.create(name: "Project 1", user:user)
-      task = project1.tasks.create(name: "Sample Task", description: "Sample Description", complete_by: date, user:user)
+      task = project1.tasks.create(name: "Sample Task", description: "Sample Description", complete_by: date, completed: true, user:user)
       project2 = task.projects.create(name: "Project 2", user:user)
       visit "/tasks/#{task.id}"
 
       expect(page).to have_content("Sample Task")
       expect(page).to have_content("Sample Description")
       expect(page).to have_content("5 day(s) from now")
+      expect(page).to have_content("Completed: Yes")
       expect(page).to have_content("Project 1")
       expect(page).to have_content("Project 2")
     end
@@ -121,7 +124,7 @@ describe TasksController do
   describe "edit task" do
     it "Allows a user to edit their own task" do
       user = create_and_login_user('user','pass')
-      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, user:user)
+      task = Task.create(name: "Initial Name", description: "Initial Description", complete_by: Date.today, completed: true,user:user)
       project1 = task.projects.create(name: "Project 1", user:user)
       project2 = Project.create(name: "Project 2", user:user)
       project3 = task.projects.create(name: "Project 3", user:user)
@@ -131,11 +134,13 @@ describe TasksController do
       fill_in "complete-by", with: Date.rfc822 # Returns date of Mon, 1 Jan -4712
       uncheck "project_1"
       check "project_2"
+      uncheck "completed"
       click_on "update-task"
       expect(page).to have_current_path("/tasks/#{task.id}")
       task.reload
       expect(task.name).to eq("Updated Name")
       expect(task.description).to eq("Updated Description")
+      expect(task.completed).to eq(false)
       expect(task.complete_by).to eq(Date.rfc822)
       expect(task.projects.include?(project1)).to eq(false)
       expect(task.projects.include?(project2)).to eq(true)
