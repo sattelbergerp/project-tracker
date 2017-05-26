@@ -70,7 +70,7 @@ describe TasksController do
       visit "/tasks/new"
       fill_in "name", with: "Test Task"
       fill_in "description", with: "Test Description"
-      fill_in "complete-by", with: "4/6/17"
+      fill_in "complete-by", with: "sdfgh"
       check "project_1"
       click_on "create-task"
       expect(page).to have_current_path("/tasks/new")
@@ -162,10 +162,11 @@ describe TasksController do
     it "does not allow an invalid date" do
       user = create_and_login_user('user','pass')
       project1 = Project.create(name: "Project 1", user:user)
+      task = project1.tasks.create(name:'a', user:user)
       visit "/tasks/#{task.id}/edit"
       fill_in "name", with: "Test Task"
       fill_in "description", with: "Test Description"
-      fill_in "complete-by", with: "4/6/17"
+      fill_in "complete-by", with: "sfhdgjh"
       check "project_1"
       click_on "update-task"
       expect(page).to have_current_path("/tasks/#{task.id}/edit")

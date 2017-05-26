@@ -3,6 +3,10 @@
   font-weight: bold;
 }
 
+.note{
+  font-style: italic;
+}
+
 .show-header{
   clear:both;
 }

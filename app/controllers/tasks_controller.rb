@@ -17,7 +17,12 @@ class TasksController < ApplicationController
   post '/tasks' do
     as_current_user do |user|
       if params[:complete_by] && !params[:complete_by].empty?
-        params[:task][:complete_by] = Date.parse(params[:complete_by])
+        begin
+          params[:task][:complete_by] = Date.parse(params[:complete_by])
+        rescue ArgumentError
+          redirect_with_error "/tasks/new", "Invalid date format. Please use 'YYYY-MM-DD'."
+          return
+        end
       end
       task = Task.new(params[:task])
       task.user = user
@@ -59,7 +64,11 @@ class TasksController < ApplicationController
   patch '/tasks/:id' do
     as_current_user do |user|
       if params[:complete_by] && !params[:complete_by].empty?
-        params[:task][:complete_by] = Date.parse(params[:complete_by])
+        begin
+          params[:task][:complete_by] = Date.parse(params[:complete_by])
+        rescue ArgumentError
+          redirect_with_error "/tasks/#{params[:id]}/edit", "Invalid date format. Please use 'YYYY-MM-DD'."
+        end
       end
       task = user.tasks.find_by(id: params[:id])
       if task
