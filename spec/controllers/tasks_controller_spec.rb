@@ -9,13 +9,15 @@ describe TasksController do
     it "Allows a logged in user to view only their tasks" do
       user = create_and_login_user('user','pass')
       user2 = User.create(name:'a',email:'a',password:'a')
-      task1 = Task.create(name:"Task 1", user:user, complete_by: Date.jd(Date.today.jd-5))
-      task2 = Task.create(name:"Task 2", user:user)
-      task3 = Task.create(name:"Task 3", user:user2)
+      tasks = [Task.create(name:"Task 1", user:user, complete_by: Date.jd(Date.today.jd-5)),
+               Task.create(name:"Task 2", user:user), completed:true]
+      Task.create(name:"Task 3", user:user2)
       visit "/tasks"
-      expect(page).to have_content("Task 1")
-      expect(page).to have_content(task1.complete_by_str)
-      expect(page).to have_content("Task 2")
+      all('.list-group-item').each_with_index do |item, index|
+        expect(item).to have_content(tasks[index].name)
+        expect(item).to have_content(tasks[index].complete_by_str)
+        expect([:class].include?("task-completed")).to eq(!!tasks[index].completed)#Rspec treats nil differed from false
+      end
       expect(page).not_to have_content("Task 3")
     end
   end

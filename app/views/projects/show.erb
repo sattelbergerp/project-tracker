@@ -5,7 +5,7 @@
 <p><%=@project.description%></p>
 <div class="list-group">
   <%@project.tasks.each do |task|%>
-    <a class="list-group-item clearfix" href="/tasks/<%=task.id%>">
+    <a class="<%='completed-task' if task.completed%> list-group-item clearfix" href="/tasks/<%=task.id%>">
       <%=task.name%>
       <span class="right"><%=task.complete_by_str%></span>
     </a>
