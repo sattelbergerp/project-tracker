@@ -38,7 +38,7 @@ describe TasksController do
       task = Task.last
       expect(task.name).to eq("Test Task")
       expect(task.description).to eq("Test Description")
-      expect(completed).to eq(true)
+      expect(task.completed).to eq(true)
       expect(task.complete_by.strftime('%s')).to eq(date.strftime('%s'))
       expect(task.projects.include?(project2)).to eq(true)
       expect(task.projects.include?(project3)).to eq(true)

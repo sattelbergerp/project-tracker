@@ -5,6 +5,7 @@
 <% if @task.complete_by %>
   <p>Complete By: <%=@task.complete_by_str%></p>
 <% end %>
+Completed: <%=@task.completed ? 'Yes' : 'No'%>
 <p><%=@task.description%></p>
 <h3>In Projects:</h3>
 <div class="list-group">

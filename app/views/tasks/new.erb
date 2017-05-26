@@ -9,6 +9,12 @@
     <p class="note"><span class="warning">*</span> Date input is not supported in all browsers (Why Firefox?). If you see a plain text field please enter the date using the following format: 'YYYY-MM-DD'.</p>
   </div>
   <div class="form-group">
+    <label>
+      <input type="hidden" name="task[completed]" value="f">
+      <input type="checkbox" name="task[completed]" id="completed" value="t"> Completed
+    </label>
+  </div>
+  <div class="form-group">
     <label>Add to projects (select at least one):</label>
     <div class="list-group">
       <% @projects.each do |project|%>
