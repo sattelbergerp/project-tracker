@@ -25,6 +25,11 @@ describe ProjectsController do
         expect(page).not_to have_content(project.name)
       end
     end
+    it "tells the user when they dont have any projects" do
+      user = create_and_login_user('user','pass')
+      visit "/projects"
+      expect(page).to have_content("You don't have any projects.")
+    end
     it "redirects the user to the homepage when not logged in" do
       visit "/projects"
       expect(page).to have_current_path("/")

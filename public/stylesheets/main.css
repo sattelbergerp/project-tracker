@@ -19,3 +19,9 @@
   background-color: #EEFFEE;
   color: white;
 }
+
+.empty-list-label{
+  text-align: center;
+  font-style: italic;
+  color: #666;
+}

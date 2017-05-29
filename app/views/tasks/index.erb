@@ -1,8 +1,12 @@
-<div class="list-group">
-  <% @tasks.each do |task| %>
-    <a class="<%='completed-task' if task.completed%> list-group-item clearfix" href = "/tasks/<%=task.id%>">
-      <%=task.name%>
-      <span class="right"><%=task.complete_by_str%></span>
-    </a>
-  <% end %>
-</div>
+<% if @tasks.count > 0 %>
+  <div class="list-group">
+    <% @tasks.each do |task| %>
+      <a class="<%='completed-task' if task.completed%> list-group-item clearfix" href = "/tasks/<%=task.id%>">
+        <%=task.name%>
+        <span class="right"><%=task.complete_by_str%></span>
+      </a>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-list-label">You don't have any tasks.</div>
+<% end %>

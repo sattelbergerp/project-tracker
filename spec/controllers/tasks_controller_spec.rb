@@ -20,6 +20,11 @@ describe TasksController do
       end
       expect(page).not_to have_content("Task 3")
     end
+    it "tells the user when they dont have any tasks" do
+      user = create_and_login_user('user','pass')
+      visit "/tasks"
+      expect(page).to have_content("You don't have any tasks.")
+    end
   end
   describe "new task" do
     it "Allows a logged in user to create a new task" do
@@ -36,7 +41,7 @@ describe TasksController do
       check "project_2"
       check "project_3"
       click_on "create-task"
-
+      
       task = Task.last
       expect(task.name).to eq("Test Task")
       expect(task.description).to eq("Test Description")
