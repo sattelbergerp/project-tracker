@@ -82,7 +82,7 @@ class ApplicationController < Sinatra::Base
 
     def redirect_with_error(path, content)
       if content.class==ActiveModel::Errors
-        flash[:error] = content.to_a.join('.<br>')+'.'
+        flash[:error] = content.full_messages.join('.<br>')+'.'
       else
         flash[:error] = content
       end

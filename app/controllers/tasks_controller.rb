@@ -10,7 +10,11 @@ class TasksController < ApplicationController
   get '/tasks/new' do
     as_current_user do |user|
       @projects = user.projects
-      erb :'tasks/new'
+      if @projects.count > 0
+        erb :'tasks/new'
+      else
+        redirect_with_error "/projects/new", "You must have at least one project to create a task."
+      end
     end
   end
 

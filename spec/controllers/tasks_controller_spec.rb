@@ -41,7 +41,7 @@ describe TasksController do
       check "project_2"
       check "project_3"
       click_on "create-task"
-      
+
       task = Task.last
       expect(task.name).to eq("Test Task")
       expect(task.description).to eq("Test Description")
@@ -72,6 +72,12 @@ describe TasksController do
       fill_in "complete-by", with: Date.rfc822
       click_on "create-task"
       expect(page).to have_current_path("/tasks/new")
+    end
+    it "shows an error if the user has no projects" do
+      user = create_and_login_user('user','pass')
+      visit "/tasks/new"
+      expect(page).to have_current_path("/projects/new")
+      expect(page).to have_content("You must have at least one project to create a task.")
     end
     it "does not allow an invalid date" do
       user = create_and_login_user('user','pass')

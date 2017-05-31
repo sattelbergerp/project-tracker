@@ -53,6 +53,12 @@ describe ProjectsController do
       visit "/projects/new"
       expect(page).to have_current_path("/")
     end
+    it 'Redirects to homepage if not logged in on POST request' do
+      #Look at last_response.body
+      post '/projects', {name: 'Test'}
+      binding.pry
+      expect(last_response.location).to include("/projects")
+    end
     it "Doesn't let a user create a project with an empty name" do
       user = create_and_login_user('user','pass')
       visit "/projects/new"
